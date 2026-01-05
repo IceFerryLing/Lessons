@@ -803,6 +803,11 @@ void bubble_sort(int arr[], int n) {
     \end{itemize}
     \item \textbf{交换位置}：交换是在\textbf{内层循环}的 \texttt{if} 语句中发生的。
     \item \textbf{稳定性}：冒泡排序是\textbf{稳定}的。
+    \item \textbf{时间复杂度}：平均和最坏情况均为 $O(n^2)$。
+    \begin{itemize}
+        \item \textbf{推导}：外层循环执行 $n-1$ 次。内层循环第 1 轮比较 $n-1$ 次，第 2 轮比较 $n-2$ 次……直到最后 1 次。
+        \item 总比较次数 = $(n-1) + (n-2) + \dots + 1 = \frac{n(n-1)}{2}$，属于 $O(n^2)$ 级别。
+    \end{itemize}
 \end{itemize}
 
 \subsubsection{选择排序 (Selection Sort)}
@@ -837,6 +842,11 @@ void selection_sort(int arr[], int n) {
     \item \textbf{交换时机}：千万不要在内层循环里交换！内层循环只负责\textbf{找下标} (\texttt{min\_idx})。
     \item \textbf{比较对象}：内层循环是 \texttt{if (arr[j] < arr[min\_idx])}，而不是 \texttt{arr[j] < arr[i]}。
     \item \textbf{稳定性}：选择排序是\textbf{不稳定}的。
+    \item \textbf{时间复杂度}：无论数组是否有序，均为 $O(n^2)$。
+    \begin{itemize}
+        \item \textbf{推导}：无论数据如何，内层循环的比较次数固定。
+        \item 第 1 轮找最小值比较 $n-1$ 次，第 2 轮比较 $n-2$ 次……总次数恒为 $\frac{n(n-1)}{2}$。
+    \end{itemize}
 \end{itemize}
 
 \subsubsection{插入排序 (Insertion Sort)}
@@ -866,6 +876,12 @@ void insertion_sort(int arr[], int n) {
 \begin{itemize}
     \item \textbf{后移操作}：\texttt{arr[j + 1] = arr[j]} 是覆盖操作，所以必须先保存 \texttt{key}。
     \item \textbf{插入位置}：循环结束时，\texttt{key} 应该放在 \texttt{j + 1} 的位置。
+    \item \textbf{稳定性}：插入排序是\textbf{稳定}的。
+    \item \textbf{时间复杂度}：
+    \begin{itemize}
+        \item \textbf{最坏情况} ($O(n^2)$)：数组完全逆序。插入第 $i$ 个元素时，需要向前比较 $i$ 次。总次数 $\sum_{i=1}^{n-1} i = \frac{n(n-1)}{2}$。
+        \item \textbf{最好情况} ($O(n)$)：数组已有序。内层 \texttt{while} 循环条件一开始就不满足（\texttt{arr[j] < key}），每次只比较 1 次，不移动。总共比较 $n-1$ 次。
+    \end{itemize}
 \end{itemize}
 
 \subsection{查找算法 (Searching)}
