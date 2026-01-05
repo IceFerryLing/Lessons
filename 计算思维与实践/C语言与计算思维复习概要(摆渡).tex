@@ -1,0 +1,1034 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{ctex}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\usepackage{parskip} % 段落间距，不缩进
+
+% 页面边距设置
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+
+% 页眉页脚设置
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{C语言与计算思维复习概要}
+\fancyhead[R]{\leftmark}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% 章节标题格式
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{blue!70!black}}{\thesection}{1em}{}[{\titlerule[0.8pt]}]
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{blue!60!black}}{\thesubsection}{1em}{}
+
+% 代码高亮设置
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.96,0.96,0.96}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=4,
+    frame=single, % 代码框
+    rulecolor=\color{gray!30},
+    language=C
+}
+\lstset{style=mystyle}
+
+% 超链接颜色设置
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!70!black,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={C语言复习攻略},
+    pdfpagemode=FullScreen,
+}
+
+% 列表间距优化
+\setlist[itemize]{itemsep=2pt, topsep=2pt, parsep=0pt}
+\setlist[enumerate]{itemsep=2pt, topsep=2pt, parsep=0pt}
+
+% 定义重点提示框
+\newtcolorbox{tipbox}[1][]{colback=blue!5!white,colframe=blue!75!black,title=核心考点/易错点,fonttitle=\bfseries,#1}
+
+\title{\textbf{\Huge C语言与计算思维\\期末复习全攻略}}
+\author{\Large 摆渡 (Powered by GitHub Copilot)}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty} % 首页不显示页码
+
+\begin{center}
+    \begin{tcolorbox}[colback=green!5!white,colframe=green!50!black,title=使用建议,fonttitle=\bfseries]
+        本复习攻略旨在帮助大家高效梳理《C语言与计算思维》课程的核心考点。
+        
+        \textbf{建议用法}：请\textbf{快速浏览}全文，对于已经掌握的知识点一带而过，重点关注\textbf{自己不熟悉}或\textbf{容易混淆}的部分（如指针、文件操作、易错点辨析等）。
+        
+        \vspace{0.5em}
+        \centering\textbf{\large 祝大家考试顺利，高分通过！}
+    \end{tcolorbox}
+\end{center}
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{计算机系统与原理}
+
+\subsection{核心考点}
+\begin{itemize}
+    \item \textbf{图灵测试 (Turing Test)}：测试机器是否具有人类智能的标准。如果测试者在不接触被测试者的情况下，无法区分人和机器，则认为机器通过测试。
+    \item \textbf{计算机系统组成}：
+    \begin{itemize}
+        \item \textbf{硬件 (Hardware)}：CPU、存储器、输入/输出设备（冯·诺依曼结构核心）。
+        \item \textbf{软件 (Software)}：系统软件（OS、驱动）、应用软件（Office、游戏）。
+    \end{itemize}
+    \item \textbf{冯·诺依曼体系结构}：
+    \begin{itemize}
+        \item \textbf{核心思想}：\textbf{存储程序} (Stored Program)。程序和数据都以二进制形式存储在存储器中。
+        \item \textbf{五大部件}：运算器、控制器、存储器、输入设备、输出设备。
+    \end{itemize}
+    \item \textbf{数据表示}：
+    \begin{itemize}
+        \item \textbf{二进制}：计算机内部使用二进制（0和1）。
+        \item \textbf{补码}：负数在计算机中以补码形式存储（按位取反+1）。
+    \end{itemize}
+\end{itemize}
+
+\subsection{简答题预测}
+\begin{description}
+    \item[Q: 什么是“存储程序”原理？] \hfill \\
+    A: 将程序（指令序列）和数据一起存储在计算机的存储器中，计算机在运行时自动地从存储器中取出指令并执行，而不需要人工干预。
+    \item[Q: 简述硬件与软件的关系。] \hfill \\
+    A: 硬件是计算机的躯壳（物理实体），软件是计算机的灵魂（思想）。硬件提供物质基础，软件指挥硬件工作。两者相辅相成，缺一不可。
+\end{description}
+
+\section{算法基础}
+
+\subsection{核心考点}
+\begin{itemize}
+    \item \textbf{定义}：解决特定问题的一系列有限步骤。
+    \item \textbf{五大特性}：
+    \begin{enumerate}
+        \item \textbf{有穷性}：步骤有限。
+        \item \textbf{确定性}：指令清晰无歧义。
+        \item \textbf{输入}：0个或多个。
+        \item \textbf{输出}：1个或多个。
+        \item \textbf{可行性}：每一步都能通过基本运算实现。
+    \end{enumerate}
+\end{itemize}
+
+\subsection{简答题预测}
+\begin{description}
+    \item[Q: 什么是算法？它有哪些基本特征？] \hfill \\
+    A: 算法是解决特定问题的一系列明确、有限的指令。基本特征包括：有穷性、确定性、可行性、输入、输出。
+\end{description}
+
+\section{实验与期末试卷分析}
+
+\subsection{实验课核心内容总结}
+\begin{itemize}
+    \item \textbf{基础运算与日期}：
+    \begin{itemize}
+        \item 模拟计算器：注意运算符优先级和除零错误。
+        \item 日期计算：闰年判断 \texttt{(year\%4==0 \&\& year\%100!=0) || (year\%400==0)}。
+    \end{itemize}
+    \item \textbf{数组与结构体}：
+    \begin{itemize}
+        \item 有序数组 vs 无序数组：插入、删除、查找的时间复杂度对比。
+        \item 结构体数组：如客户信息管理、歌唱比赛评分（去掉最高最低分求平均）。
+    \end{itemize}
+    \item \textbf{递归应用}：
+    \begin{itemize}
+        \item 汉诺塔：经典的递归分治问题。
+        \item 预测赢家：博弈论中的递归求解。
+    \end{itemize}
+    \item \textbf{大数运算}：
+    \begin{itemize}
+        \item 使用字符数组或整型数组模拟超大整数的加法，注意进位处理。
+    \end{itemize}
+    \item \textbf{栈的应用}：
+    \begin{itemize}
+        \item JSON字符串括号匹配：利用栈的后进先出特性，遇到左括号入栈，遇到右括号出栈匹配。
+    \end{itemize}
+\end{itemize}
+
+\subsection{期末试卷高频考点解析}
+\begin{itemize}
+    \item \textbf{选择题陷阱}：
+    \begin{itemize}
+        \item \textbf{字符串长度}：\texttt{strlen} 遇到 \texttt{\textbackslash 0} 停止，转义字符（如 \texttt{\textbackslash 101}）算一个字符。
+        \item \textbf{逻辑短路}：\texttt{a || b++}，若 \texttt{a} 为真，\texttt{b++} 不执行。
+        \item \textbf{指针类型}：区分 \texttt{int *p[10]} (指针数组) 和 \texttt{int (*p)[10]} (数组指针)。
+        \item \textbf{作用域}：局部变量屏蔽同名全局变量。
+    \end{itemize}
+    \item \textbf{程序填空题常考模式}：
+    \begin{itemize}
+        \item \textbf{数学公式实现}：如海伦公式求三角形面积、泰勒级数求 \texttt{sin(x)}（注意循环终止条件 \texttt{fabs(term) < 1e-5}）。
+        \item \textbf{最大公约数}：辗转相除法的 \texttt{while} 循环实现。
+        \item \textbf{条件判断}：三目运算符 \texttt{a>b?a:b} 的嵌套使用。
+    \end{itemize}
+    \item \textbf{代码阅读题}：
+    \begin{itemize}
+        \item 能够正确跟踪指针的移动和数组元素的访问。
+        \item 理解 \texttt{sizeof} 在不同情况下的值（数组名 vs 指针）。
+    \end{itemize}
+\end{itemize}
+
+\section{C语言基础语法}
+
+\subsection{数据类型与运算}
+\begin{itemize}
+    \item \textbf{数据类型大小}：\texttt{sizeof} 是运算符。
+    \begin{itemize}
+        \item \texttt{char} (1), \texttt{short} (2), \texttt{int} (4), \texttt{long} (4或8), \texttt{double} (8)。
+    \end{itemize}
+    \item \textbf{类型转换}：
+    \begin{itemize}
+        \item \textbf{隐式}：\texttt{int + double} $\rightarrow$ \texttt{double}。
+        \item \textbf{强制}：\texttt{(int)(3.14 + 0.9)} 结果是 4。
+    \end{itemize}
+    \item \textbf{自增自减}：
+    \begin{itemize}
+        \item \texttt{b = a++}：先赋值，后自增。
+        \item \texttt{b = ++a}：先自增，后赋值。
+        \item \textbf{真题陷阱}：\texttt{k=(n=b>a)||(m=a<b)}。注意逻辑短路，若前半部分为真，后半部分不执行。
+    \end{itemize}
+    \item \textbf{位运算}：
+    \begin{itemize}
+        \item \texttt{\&, |, \^{}, \~{}, <<, >>}。
+        \item 技巧：\texttt{a << 1} (乘2), \texttt{a >> 1} (除2), \texttt{n \& 1} (判断奇偶)。
+    \end{itemize}
+\end{itemize}
+
+\subsection{输入输出 (Input/Output)}
+\begin{itemize}
+    \item \textbf{格式化输出 (printf)}：
+    \begin{itemize}
+        \item \texttt{\%d} (整型), \texttt{\%f} (浮点), \texttt{\%c} (字符), \texttt{\%s} (字符串), \texttt{\%p} (指针地址)。
+        \item \textbf{精度控制}：\texttt{\%.2f} (保留2位小数)，\texttt{\%5d} (宽5位右对齐)，\texttt{\%-5d} (宽5位左对齐)。
+    \end{itemize}
+    \item \textbf{格式化输入 (scanf)}：
+    \begin{itemize}
+        \item \textbf{地址符}：除了字符串数组名外，变量前必须加 \texttt{\&}。
+        \item \textbf{分隔符}：若格式串为 \texttt{"\%d,\%d"}，输入时必须加逗号。
+        \item \textbf{缓冲区残留}：混合输入字符和数字时，回车符可能被 \texttt{\%c} 读取。建议在 \texttt{\%c} 前加空格：\texttt{scanf(" \%c", \&ch);}。
+    \end{itemize}
+    \item \textbf{字符输入输出}：
+    \begin{itemize}
+        \item \texttt{getchar()} / \texttt{putchar()}：一次只处理一个字符。
+    \end{itemize}
+\end{itemize}
+
+\subsection{常量与宏定义}
+\begin{itemize}
+    \item \textbf{const 常量}：
+    \begin{itemize}
+        \item \texttt{const int MAX = 100;}
+        \item 有类型检查，占用内存（通常在只读区）。
+    \end{itemize}
+    \item \textbf{宏定义 (\#define)}：
+    \begin{itemize}
+        \item \texttt{\#define MAX 100}
+        \item 预处理阶段文本替换，无类型检查，不占内存。
+        \item \textbf{注意}：宏定义末尾不要加分号。
+    \end{itemize}
+\end{itemize}
+
+\subsection{易错点}
+\begin{itemize}
+    \item \textbf{除法陷阱}：\texttt{5 / 2 = 2}, \texttt{5.0 / 2 = 2.5}。
+    \item \textbf{逻辑短路}：\texttt{A || B} (A真B不执行), \texttt{A \&\& B} (A假B不执行)。
+    \item \textbf{浮点比较}：严禁 \texttt{f == 0.0}，应用 \texttt{fabs(f) < 1e-6}。
+    \item \textbf{赋值与相等}：\texttt{if(a=2)} 永远为真，且 \texttt{a} 变为 2。这是极高频考点。
+\end{itemize}
+
+\section{控制结构}
+
+\begin{itemize}
+    \item \textbf{Switch-Case}：\texttt{case} 后必须是整型或字符型常量。注意\textbf{穿透性}（漏写 \texttt{break}）。
+    \item \textbf{循环}：\texttt{continue} 跳过本次剩余，\texttt{break} 跳出循环。
+    \item \textbf{易错点}：悬挂 \texttt{else}（与最近的 \texttt{if} 匹配）；分号错误（\texttt{if(x); ...}）。
+    \item \textbf{真题模式}：利用 \texttt{do...while} 计算泰勒级数（如 \texttt{sin(x)}），注意循环终止条件通常是 \texttt{fabs(term) < 1e-5}。
+\end{itemize}
+
+\section{数组与字符串}
+
+\subsection{基本概念}
+\begin{itemize}
+    \item \textbf{定义}：字符串是以空字符 \texttt{'\textbackslash 0'} 结尾的字符数组。
+    \item \textbf{初始化}：
+    \begin{itemize}
+        \item \texttt{char s[] = "hello";} (自动加 \texttt{'\textbackslash 0'}，长度为6，内容可变)
+        \item \texttt{char *p = "hello";} (字符串常量，通常存储在只读数据区，\textbf{不可修改})
+    \end{itemize}
+    \item \textbf{sizeof vs strlen}：
+    \begin{itemize}
+        \item \texttt{sizeof}：计算数组占用的总字节数（含 \texttt{'\textbackslash 0'}）。
+        \item \texttt{strlen}：计算字符串的有效长度（不含 \texttt{'\textbackslash 0'}）。
+        \item \textbf{真题陷阱}：\texttt{strlen("abc\textbackslash 0def")} 结果是 3（遇到第一个 \texttt{\textbackslash 0} 停止）。
+    \end{itemize}
+\end{itemize}
+
+\subsection{常用字符串函数 (<string.h>)}
+\begin{itemize}
+    \item \textbf{复制 (Copy)}：
+    \begin{itemize}
+        \item \texttt{strcpy(dest, src)}：将 \texttt{src} 复制到 \texttt{dest}。
+        \item \textbf{危险}：若 \texttt{dest} 空间不足，会发生缓冲区溢出。
+        \item \texttt{strncpy(dest, src, n)}：最多复制 \texttt{n} 个字符。注意：若 \texttt{src} 长度 $> n$，则 \texttt{dest} 不会自动添加 \texttt{'\textbackslash 0'}，需手动添加。
+    \end{itemize}
+    
+    \item \textbf{拼接 (Concatenate)}：
+    \begin{itemize}
+        \item \texttt{strcat(dest, src)}：将 \texttt{src} 拼接到 \texttt{dest} 后面。
+        \item \textbf{要求}：\texttt{dest} 必须有足够的剩余空间，且必须以 \texttt{'\textbackslash 0'} 结尾。
+        \item \texttt{strncat(dest, src, n)}：拼接前 \texttt{n} 个字符，会自动添加 \texttt{'\textbackslash 0'}。
+    \end{itemize}
+    
+    \item \textbf{比较 (Compare)}：
+    \begin{itemize}
+        \item \texttt{strcmp(s1, s2)}：按字典序比较。
+        \item \textbf{返回值}：0 (相等), >0 (s1大), <0 (s1小)。
+        \item \textbf{陷阱}：严禁使用 \texttt{if(s1 == s2)} 比较内容（这是比较地址！）。
+    \end{itemize}
+    
+    \item \textbf{查找 (Search)}：
+    \begin{itemize}
+        \item \texttt{strchr(s, c)}：查找字符 \texttt{c} 首次出现的位置（返回指针）。
+        \item \texttt{strstr(s1, s2)}：查找子串 \texttt{s2} 首次出现的位置。
+    \end{itemize}
+\end{itemize}
+
+\subsection{其他重要函数}
+\begin{itemize}
+    \item \texttt{sprintf(buf, "\%d", 123)}：将数据格式化输出到字符串中（常用于数字转字符串）。
+    \item \texttt{atoi(s) / atof(s)}：字符串转整数/浮点数 (\texttt{<stdlib.h>})。
+\end{itemize}
+
+\section{指针 (核心难点)}
+
+\subsection{指针基础与运算}
+\begin{itemize}
+    \item \textbf{定义与解引用}：
+    \begin{itemize}
+        \item \texttt{int *p = \&a;}：\texttt{p} 存储 \texttt{a} 的地址。
+        \item \texttt{*p}：访问 \texttt{p} 指向的内存单元（即 \texttt{a}）。
+        \item \textbf{口诀}：\texttt{\&} 取地址，\texttt{*} 取值。
+    \end{itemize}
+    \item \textbf{指针运算}：
+    \begin{itemize}
+        \item \texttt{p + 1}：\textbf{不是地址加1}，而是地址增加 \texttt{sizeof(类型)}。
+        \item \texttt{p1 - p2}：返回两指针之间的\textbf{元素个数}（不是字节数）。
+        \item \textbf{示例}：若 \texttt{int a[5]}，\texttt{p=a}，则 \texttt{*(p+2)} 等价于 \texttt{a[2]}。
+    \end{itemize}
+\end{itemize}
+
+\subsection{指针与数组的深度辨析}
+\begin{itemize}
+    \item \textbf{访问方式等价性}：
+    \begin{itemize}
+        \item \texttt{a[i]} $\iff$ \texttt{*(a+i)} $\iff$ \texttt{*(p+i)} $\iff$ \texttt{p[i]}。
+    \end{itemize}
+    \item \textbf{本质区别}：
+    \begin{itemize}
+        \item \textbf{数组名} \texttt{a} 是\textbf{常量指针}，不可修改（\texttt{a++} 非法）。
+        \item \textbf{指针变量} \texttt{p} 是变量，可以修改指向（\texttt{p++} 合法）。
+    \end{itemize}
+    \item \textbf{二维数组指针}：
+    \begin{itemize}
+        \item \texttt{int a[3][4];}
+        \item \texttt{a}：指向首行（类型 \texttt{int (*)[4]}）。
+        \item \texttt{a[0]}：指向首行首元素（类型 \texttt{int *}）。
+        \item \texttt{a[i][j]} $\iff$ \texttt{*(*(a+i)+j)}。
+    \end{itemize}
+\end{itemize}
+
+\subsection{复杂指针声明解析}
+\begin{itemize}
+    \item \textbf{const修饰}（“左定值，右定向”）：
+    \begin{itemize}
+        \item \texttt{const int *p}：\texttt{*p} (内容) 不可变，\texttt{p} (指向) 可变。
+        \item \texttt{int * const p}：\texttt{p} (指向) 不可变，\texttt{*p} (内容) 可变。
+    \end{itemize}
+    \item \textbf{指针数组 vs 数组指针}：
+    \begin{itemize}
+        \item \texttt{int *p[10]}：\textbf{数组}，存了10个指针。
+        \item \texttt{int (*p)[10]}：\textbf{指针}，指向长度为10的数组。
+    \end{itemize}
+    \item \textbf{函数指针}：
+    \begin{itemize}
+        \item 定义：\texttt{int (*func)(int, int);}
+        \item 用途：回调函数（如 \texttt{qsort} 的比较函数）。
+    \end{itemize}
+\end{itemize}
+
+\subsection{简答题预测}
+\begin{description}
+    \item[Q: 什么是指针？为什么要使用指针？] \hfill \\
+    A: 指针是存储内存地址的变量。作用：1. 直接操作内存；2. 函数间传递大数据（避免拷贝）；3. 动态内存分配；4. 操作复杂数据结构。
+\end{description}
+
+\section{函数与递归}
+
+\begin{itemize}
+    \item \textbf{传值 vs 传址}：修改实参需传指针。数组传参退化为指针。
+    \item \textbf{递归 (Recursion)}：
+    \begin{itemize}
+        \item \textbf{要素}：基准情况 (Base Case) + 递归步骤 (Recursive Step)。
+        \item \textbf{优缺点}：代码简洁但开销大（栈空间）。
+    \end{itemize}
+    \item \textbf{存储类别}：
+    \begin{itemize}
+        \item \texttt{auto}：栈内存。
+        \item \texttt{static}：延长局部变量生命周期；限制全局变量作用域。
+        \item \textbf{真题考点}：局部变量与全局变量同名时，局部变量优先（屏蔽全局变量）。
+    \end{itemize}
+\end{itemize}
+
+\section{结构体、共用体与枚举}
+
+\subsection{核心考点}
+\begin{itemize}
+    \item \textbf{结构体 (Struct)}：
+    \begin{itemize}
+        \item 成员拥有独立内存。
+        \item \textbf{内存对齐}：总大小 $\ge$ 成员之和。
+        \item \textbf{真题考点}：\texttt{typedef struct \{...\} Name;} 定义别名，方便使用。
+    \end{itemize}
+    \item \textbf{共用体 (Union)}：
+    \begin{itemize}
+        \item 成员共享同一块内存。
+        \item 总大小 = 最大成员大小。
+    \end{itemize}
+    \item \textbf{枚举 (Enum)}：默认从0开始递增。
+\end{itemize}
+
+\subsection{简答题预测}
+\begin{description}
+    \item[Q: 简述结构体和共用体的区别。] \hfill \\
+    A: 1. 内存：结构体成员独立，共用体成员共享。2. 大小：结构体累加（含对齐），共用体取最大。3. 赋值：共用体同一时间只能存一个值。
+\end{description}
+
+\section{动态内存管理 (Dynamic Memory)}
+
+\subsection{栈 (Stack) 与 堆 (Heap) 的区别}
+\begin{itemize}
+    \item \textbf{栈 (Stack)}：
+    \begin{itemize}
+        \item 由编译器自动分配释放。
+        \item 存放局部变量、函数参数。
+        \item 空间较小，速度快。
+    \end{itemize}
+    \item \textbf{堆 (Heap)}：
+    \begin{itemize}
+        \item 由程序员手动分配 (\texttt{malloc}) 和释放 (\texttt{free})。
+        \item 空间大，但容易产生内存泄漏或碎片。
+    \end{itemize}
+\end{itemize}
+
+\subsection{核心函数详解}
+\begin{itemize}
+    \item \textbf{malloc}：\texttt{void *malloc(size\_t size);}
+    \begin{itemize}
+        \item 分配指定字节数的内存。
+        \item \textbf{内容未初始化}（随机值）。
+        \item 返回 \texttt{void*}，通常需要强制类型转换（C语言中可省略，但建议写上）。
+        \item \textbf{示例}：\texttt{int *p = (int*)malloc(n * sizeof(int));}
+    \end{itemize}
+    \item \textbf{calloc}：\texttt{void *calloc(size\_t n, size\_t size);}
+    \begin{itemize}
+        \item 分配 $n \times size$ 字节。
+        \item \textbf{自动初始化为 0}。
+    \end{itemize}
+    \item \textbf{realloc}：\texttt{void *realloc(void *ptr, size\_t new\_size);}
+    \begin{itemize}
+        \item 调整已分配内存的大小。
+        \item 可能移动内存块位置，必须接收返回值更新指针。
+    \end{itemize}
+    \item \textbf{free}：\texttt{void free(void *ptr);}
+    \begin{itemize}
+        \item 释放内存，归还给系统。
+        \item \textbf{注意}：释放后指针变量本身的值未变（悬空指针），建议立即置为 \texttt{NULL}。
+    \end{itemize}
+\end{itemize}
+
+\subsection{常见错误与最佳实践}
+\begin{itemize}
+    \item \textbf{忘记检查 NULL}：
+    \begin{lstlisting}
+    int *p = (int*)malloc(1000 * sizeof(int));
+    if (p == NULL) {
+        // 处理分配失败
+        exit(1);
+    }
+    \end{lstlisting}
+    \item \textbf{内存泄漏 (Memory Leak)}：申请了内存但没有 \texttt{free}，导致程序占用内存越来越多。
+    \item \textbf{悬空指针 (Dangling Pointer)}：使用已经 \texttt{free} 过的指针。
+    \item \textbf{重复释放}：对同一个指针 \texttt{free} 两次（会导致崩溃）。
+\end{itemize}
+
+\section{文件操作详解 (File I/O)}
+
+\subsection{文件打开与关闭}
+\begin{itemize}
+    \item \textbf{打开文件}：\texttt{FILE *fp = fopen("filename", "mode");}
+    \item \textbf{检查是否成功}：\textbf{必须}检查 \texttt{fp} 是否为 \texttt{NULL}。
+    \begin{lstlisting}
+    if ((fp = fopen("data.txt", "r")) == NULL) {
+        printf("Cannot open file.\n");
+        exit(1);
+    }
+    \end{lstlisting}
+    \item \textbf{关闭文件}：\texttt{fclose(fp);} 也就是保存文件，释放缓冲区。
+\end{itemize}
+
+\subsection{文件打开模式 (Mode)}
+\begin{itemize}
+    \item \texttt{"r"}：\textbf{只读}。文件必须存在，否则报错 (NULL)。
+    \item \texttt{"w"}：\textbf{只写}。文件不存在则创建；\textbf{存在则清空}（危险！）。
+    \item \texttt{"a"}：\textbf{追加}。文件不存在则创建；存在则在末尾追加。
+    \item \texttt{"r+"}：\textbf{读写}。文件必须存在。
+    \item \texttt{"w+"}：\textbf{读写}。新建或清空。
+    \item \texttt{"a+"}：\textbf{读写追加}。
+    \item \textbf{二进制模式}：加 \texttt{b} (如 \texttt{"rb"}, \texttt{"wb"})。区别在于换行符处理（Windows下 \texttt{\textbackslash r\textbackslash n} $\leftrightarrow$ \texttt{\textbackslash n}）。
+\end{itemize}
+
+\subsection{读写函数辨析}
+\begin{itemize}
+    \item \textbf{字符读写}：
+    \begin{itemize}
+        \item \texttt{ch = fgetc(fp)}：读一个字符。结束返回 \texttt{EOF}。
+        \item \texttt{fputc(ch, fp)}：写一个字符。
+    \end{itemize}
+    \item \textbf{字符串读写}：
+    \begin{itemize}
+        \item \texttt{fgets(str, n, fp)}：读取一行（最多 $n-1$ 个字符），\textbf{保留换行符}，自动加 \texttt{\textbackslash 0}。
+        \item \texttt{fputs(str, fp)}：写入字符串，不会自动加换行符。
+    \end{itemize}
+    \item \textbf{格式化读写}（文本文件）：
+    \begin{itemize}
+        \item \texttt{fscanf(fp, "\%d", \&num)}：从文件读。
+        \item \texttt{fprintf(fp, "Result: \%d", num)}：写入文件。
+    \end{itemize}
+    \item \textbf{数据块读写}（二进制文件）：
+    \begin{itemize}
+        \item \texttt{fread(buffer, size, count, fp)}：从文件读 count 个 size 大小的块到 buffer。
+        \item \texttt{fwrite(buffer, size, count, fp)}：将 buffer 中 count 个 size 大小的块写入文件。
+        \item \textbf{返回值}：成功读/写的块数 (\texttt{count})。
+    \end{itemize}
+\end{itemize}
+
+\subsection{文件定位与随机读写}
+\begin{itemize}
+    \item \texttt{rewind(fp)}：文件指针回到开头。
+    \item \texttt{ftell(fp)}：返回当前文件指针位置（字节偏移量）。
+    \item \texttt{fseek(fp, offset, origin)}：移动指针。
+    \begin{itemize}
+        \item \texttt{SEEK\_SET} (0)：文件头。
+        \item \texttt{SEEK\_CUR} (1)：当前位置。
+        \item \texttt{SEEK\_END} (2)：文件尾。
+    \end{itemize}
+\end{itemize}
+
+\subsection{高频易错点 (坑)}
+\begin{itemize}
+    \item \textbf{feof 的误用}：
+    \begin{itemize}
+        \item \texttt{while(!feof(fp))} 是错误的！
+        \item 原因：\texttt{feof} 只有在\textbf{读取失败}（读到了文件尾之后）才会返回真。这会导致最后一行数据被处理两次。
+        \item \textbf{正确写法}：检查读取函数的返回值。
+        \begin{lstlisting}
+        while (fscanf(fp, "%d", &n) != EOF) { ... }
+        // 或者
+        while (fgets(buf, 100, fp) != NULL) { ... }
+        \end{lstlisting}
+    \end{itemize}
+    \item \textbf{路径分隔符}：Windows路径 \texttt{C:\textbackslash test.txt} 在字符串中要写成 \texttt{"C:\textbackslash\textbackslash test.txt"}。
+    \item \textbf{读写同步}：在 \texttt{r+} 等读写模式下，读和写之间必须调用 \texttt{fseek} 或 \texttt{fflush} 刷新缓冲区，否则数据会错乱。
+\end{itemize}
+
+\subsection{预处理指令补充}
+\begin{itemize}
+    \item \textbf{Include}：\texttt{<>} 查系统库，\texttt{""} 查当前目录。
+\end{itemize}
+
+\section{核心算法详解与易错点深度剖析}
+
+\subsection{排序算法 (Sorting)}
+
+\subsubsection{冒泡排序 (Bubble Sort)}
+\textbf{核心思想}：像水底的气泡一样，每一轮通过两两比较和交换，将当前未排序部分的最大值“浮”到数组的最右端。
+
+\begin{lstlisting}
+void bubble_sort(int arr[], int n) {
+    int i, j, temp;
+    // 外层循环：控制排序轮数，共需 n-1 轮
+    for (i = 0; i < n - 1; i++) {
+        // 内层循环：负责两两比较
+        // 易错点1：边界是 n-1-i，因为最后 i 个元素已经排好序了
+        for (j = 0; j < n - 1 - i; j++) {
+            if (arr[j] > arr[j + 1]) { // 升序用 >，降序用 <
+                temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+\end{lstlisting}
+
+\textbf{🔴 易错点与考点}：
+\begin{itemize}
+    \item \textbf{内层循环边界}：\texttt{j < n - 1 - i}。
+    \begin{itemize}
+        \item 如果写成 \texttt{j < n - 1}，程序也能跑，但效率低。
+        \item 如果写成 \texttt{j < n}，在访问 \texttt{arr[j+1]} 时会\textbf{数组越界}。
+    \end{itemize}
+    \item \textbf{交换位置}：交换是在\textbf{内层循环}的 \texttt{if} 语句中发生的。
+    \item \textbf{稳定性}：冒泡排序是\textbf{稳定}的。
+\end{itemize}
+
+\subsubsection{选择排序 (Selection Sort)}
+\textbf{核心思想}：每一轮从未排序区域中找到\textbf{最小值}的下标，然后将其与未排序区域的第一个元素交换。
+
+\begin{lstlisting}
+void selection_sort(int arr[], int n) {
+    int i, j, min_idx, temp;
+    // 外层循环：控制当前要确定的位置，从 0 到 n-2
+    for (i = 0; i < n - 1; i++) {
+        min_idx = i; // 假设当前位置 i 就是最小值
+        
+        // 内层循环：在剩余元素中找真正的最小值下标
+        for (j = i + 1; j < n; j++) {
+            if (arr[j] < arr[min_idx]) {
+                min_idx = j; // 更新最小值下标，注意这里不交换！
+            }
+        }
+        
+        // 易错点2：交换发生在内层循环结束后
+        if (min_idx != i) {
+            temp = arr[i];
+            arr[i] = arr[min_idx];
+            arr[min_idx] = temp;
+        }
+    }
+}
+\end{lstlisting}
+
+\textbf{🔴 易错点与考点}：
+\begin{itemize}
+    \item \textbf{交换时机}：千万不要在内层循环里交换！内层循环只负责\textbf{找下标} (\texttt{min\_idx})。
+    \item \textbf{比较对象}：内层循环是 \texttt{if (arr[j] < arr[min\_idx])}，而不是 \texttt{arr[j] < arr[i]}。
+    \item \textbf{稳定性}：选择排序是\textbf{不稳定}的。
+\end{itemize}
+
+\subsubsection{插入排序 (Insertion Sort)}
+\textbf{核心思想}：像打扑克牌理牌一样，将新抓到的牌（\texttt{key}）插入到左手已经排好序的牌堆中的正确位置。
+
+\begin{lstlisting}
+void insertion_sort(int arr[], int n) {
+    int i, j, key;
+    // 从第2个元素开始（下标1），因为第1个元素默认有序
+    for (i = 1; i < n; i++) {
+        key = arr[i]; // 待插入的牌
+        j = i - 1;    // 左边已排序区域的最后一个元素
+        
+        // 易错点3：while 循环条件
+        // j >= 0 保证不越界
+        // arr[j] > key 保证找到比 key 大的元素往后挪
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j]; // 元素后移
+            j--; // 继续向前找
+        }
+        arr[j + 1] = key; // 插入到正确位置
+    }
+}
+\end{lstlisting}
+
+\textbf{🔴 易错点与考点}：
+\begin{itemize}
+    \item \textbf{后移操作}：\texttt{arr[j + 1] = arr[j]} 是覆盖操作，所以必须先保存 \texttt{key}。
+    \item \textbf{插入位置}：循环结束时，\texttt{key} 应该放在 \texttt{j + 1} 的位置。
+\end{itemize}
+
+\subsection{查找算法 (Searching)}
+
+\subsubsection{二分查找 (Binary Search)}
+\textbf{前提条件}：数组必须是\textbf{有序}的。
+
+\begin{lstlisting}
+int binary_search(int arr[], int n, int key) {
+    int low = 0, high = n - 1;
+    int mid;
+    
+    while (low <= high) { // 易错点4：是 <= 不是 <
+        // 易错点5：防溢出写法
+        mid = low + (high - low) / 2; 
+        
+        if (arr[mid] == key) {
+            return mid; // 找到了
+        } else if (arr[mid] < key) {
+            low = mid + 1; // 在右半边，low 必须 +1
+        } else {
+            high = mid - 1; // 在左半边，high 必须 -1
+        }
+    }
+    return -1; // 没找到
+}
+\end{lstlisting}
+
+\textbf{🔴 易错点与考点}：
+\begin{itemize}
+    \item \textbf{循环条件}：\texttt{while (low <= high)}。如果写成 \texttt{<}，会漏掉边界情况。
+    \item \textbf{死循环陷阱}：更新边界时必须是 \texttt{mid + 1} 或 \texttt{mid - 1}。
+    \item \textbf{Mid 计算}：\texttt{(low + high) / 2} 可能溢出，推荐 \texttt{low + (high - low) / 2}。
+\end{itemize}
+
+\subsection{数学与逻辑算法}
+
+\subsubsection{辗转相除法 (GCD)}
+\textbf{核心思想}：\texttt{gcd(a, b) = gcd(b, a \% b)}。
+
+\begin{lstlisting}
+// 递归版
+int gcd(int a, int b) {
+    if (b == 0) return a;
+    return gcd(b, a % b);
+}
+\end{lstlisting}
+
+\subsubsection{素数判断 (Prime Check)}
+\textbf{核心思想}：除了 1 和它本身外，不能被其他数整除。
+
+\begin{lstlisting}
+#include <math.h> // 需要用到 sqrt
+
+int is_prime(int n) {
+    if (n <= 1) return 0; // 易错点6：1 不是素数
+    
+    // 优化：只需要判断到 sqrt(n)
+    int limit = (int)sqrt(n);
+    for (int i = 2; i <= limit; i++) {
+        if (n % i == 0) {
+            return 0; // 发现因子，不是素数
+        }
+    }
+    return 1; // 是素数
+}
+\end{lstlisting}
+
+\textbf{🔴 易错点与考点}：
+\begin{itemize}
+    \item \textbf{特判 1}：\texttt{1} 既不是质数也不是合数，必须单独判断返回 0。
+    \item \textbf{循环终止条件}：\texttt{i * i <= n} 或 \texttt{i <= sqrt(n)}。
+\end{itemize}
+
+\subsection{字符串处理算法}
+
+\subsubsection{字符串逆序}
+\textbf{核心思想}：双指针法，首尾交换，向中间逼近。
+
+\begin{lstlisting}
+void reverse_string(char str[]) {
+    int len = strlen(str);
+    int i = 0;          // 头指针
+    int j = len - 1;    // 尾指针
+    char temp;
+    
+    while (i < j) {
+        temp = str[i];
+        str[i] = str[j];
+        str[j] = temp;
+        i++;
+        j--;
+    }
+}
+\end{lstlisting}
+
+\textbf{🔴 易错点与考点}：
+\begin{itemize}
+    \item \textbf{尾指针位置}：\texttt{len - 1}。
+    \item \textbf{循环条件}：\texttt{i < j}。
+    \item \textbf{不要动 \textbackslash 0}：\texttt{\textbackslash 0} 是字符串结束符，不参与交换。
+\end{itemize}
+
+\subsection{考试手写代码“救命”技巧}
+\begin{enumerate}
+    \item \textbf{头文件}：用到 \texttt{printf} 写 \texttt{\#include <stdio.h>}，用到 \texttt{malloc} 写 \texttt{\#include <stdlib.h>}，用到 \texttt{strlen} 写 \texttt{\#include <string.h>}，用到 \texttt{sqrt} 写 \texttt{\#include <math.h>}。
+    \item \textbf{变量初始化}：计数器 \texttt{count}、累加器 \texttt{sum} 一定要初始化为 0。
+    \item \textbf{分号检查}：\texttt{if}、\texttt{for}、\texttt{while} 后面千万别手顺加分号！
+    \item \textbf{返回值}：\texttt{main} 函数最后记得写 \texttt{return 0;}。
+\end{enumerate}
+
+\section{C语言易混淆概念辨析}
+
+\begin{itemize}
+    \item \textbf{赋值 vs 相等}：
+    \begin{itemize}
+        \item \texttt{=} 是赋值运算符（把右边的值给左边）。
+        \item \texttt{==} 是关系运算符（判断左右两边是否相等）。
+        \item \textbf{陷阱}：\texttt{if(x=5)} 永远为真，\texttt{x} 变为5；\texttt{if(x==5)} 才是判断。
+    \end{itemize}
+
+    \item \textbf{字符 vs 字符串}：
+    \begin{itemize}
+        \item \texttt{'a'}：字符常量，占1字节。
+        \item \texttt{"a"}：字符串常量，包含 \texttt{'a'} 和 \texttt{'\textbackslash 0'}，占2字节。
+    \end{itemize}
+
+    \item \textbf{逻辑与 vs 按位与}：
+    \begin{itemize}
+        \item \texttt{\&\&} (逻辑与)：短路特性，结果为 0 或 1。
+        \item \texttt{\&} (按位与)：按二进制位操作，如 \texttt{3 \& 5} (011 \& 101 = 001)。
+    \end{itemize}
+
+    \item \textbf{sizeof vs strlen}：
+    \begin{itemize}
+        \item \texttt{sizeof}：运算符，编译时计算，统计类型或变量占用的\textbf{内存字节数}（包含 \texttt{\textbackslash 0}）。
+        \item \texttt{strlen}：函数，运行时计算，统计字符串的\textbf{有效字符长度}（遇到 \texttt{\textbackslash 0} 停止，不含 \texttt{\textbackslash 0}）。
+    \end{itemize}
+
+    \item \textbf{指针数组 vs 数组指针}：
+    \begin{itemize}
+        \item \texttt{int *p[10]}：\textbf{数组}，里面存了10个 \texttt{int*} 指针。
+        \item \texttt{int (*p)[10]}：\textbf{指针}，指向一个包含10个 \texttt{int} 的数组。
+    \end{itemize}
+
+    \item \textbf{p++ vs (*p)++}：
+    \begin{itemize}
+        \item \texttt{p++}：指针向后移动一个单位（地址改变）。
+        \item \texttt{(*p)++}：指针指向的值加1（地址不变，内容改变）。
+    \end{itemize}
+
+    \item \textbf{break vs continue}：
+    \begin{itemize}
+        \item \texttt{break}：彻底跳出当前循环（或 switch）。
+        \item \texttt{continue}：跳过本次循环剩余语句，直接进入下一次循环判断。
+    \end{itemize}
+    
+    \item \textbf{形参 vs 实参}：
+    \begin{itemize}
+        \item \textbf{单向传递}：实参的值传给形参，形参改变不影响实参（除非传指针）。
+    \end{itemize}
+\end{itemize}
+
+\section{冷门与进阶考点拾遗}
+
+\begin{itemize}
+    \item \textbf{逗号运算符}：
+    \begin{itemize}
+        \item 优先级最低。
+        \item 表达式的值是\textbf{最后一个表达式}的值。
+        \item 例：\texttt{a = 3, 4, 5;} $\rightarrow$ \texttt{a} 为 3（赋值优先级高于逗号）。
+        \item 例：\texttt{a = (3, 4, 5);} $\rightarrow$ \texttt{a} 为 5。
+    \end{itemize}
+
+    \item \textbf{宏定义陷阱}：
+    \begin{itemize}
+        \item 宏只是简单的文本替换，不进行计算。
+        \item 例：\texttt{\#define S(r) r*r}。若调用 \texttt{S(a+b)}，展开为 \texttt{a+b*a+b}，而非 \texttt{(a+b)*(a+b)}。
+        \item \textbf{对策}：宏定义中每个参数都要加括号，整体也要加括号。
+    \end{itemize}
+
+    \item \textbf{转义字符}：
+    \begin{itemize}
+        \item \texttt{\textbackslash ddd}：1-3位八进制数代表的字符（如 \texttt{\textbackslash 101} 是 'A'）。
+        \item \texttt{\textbackslash xhh}：1-2位十六进制数代表的字符。
+        \item 注意：\texttt{\textbackslash 08} 是非法的（八进制没有8）。
+    \end{itemize}
+
+    \item \textbf{格式化输出细节}：
+    \begin{itemize}
+        \item \texttt{\%5d}：域宽为5，右对齐。
+        \item \texttt{\%-5d}：域宽为5，左对齐。
+        \item \texttt{\%05d}：域宽为5，不足补0。
+        \item \texttt{\%5.2f}：总宽5，小数点后2位。
+    \end{itemize}
+
+    \item \textbf{运算符优先级口诀}：
+    \begin{itemize}
+        \item \textbf{单目} (!, ++, --, sizeof) > \textbf{算术} (*, /, \%) > \textbf{算术} (+, -) > \textbf{移位} (<<, >>) > \textbf{关系} (>, <) > \textbf{相等} (==, !=) > \textbf{位逻辑} (\&, \^{}, |) > \textbf{逻辑} (\&\&, ||) > \textbf{三目} (? :) > \textbf{赋值} (=) > \textbf{逗号} (,)。
+        \item 记不住就加括号！
+    \end{itemize}
+    
+    \item \textbf{typedef 与 \#define 的区别}：
+    \begin{itemize}
+        \item \texttt{\#define} 是预处理指令，仅做文本替换。
+        \item \texttt{typedef} 是编译指令，为类型创建别名，有作用域检查。
+        \item 例：\texttt{typedef int* ptr;} \texttt{ptr a, b;} $\rightarrow$ a, b 都是指针。
+        \item 例：\texttt{\#define PTR int*} \texttt{PTR a, b;} $\rightarrow$ a 是指针，b 是整型（替换后为 \texttt{int * a, b;}）。
+    \end{itemize}
+\end{itemize}
+
+\section{简答题预测汇总}
+
+以下是根据历年考点和课程核心内容整理的简答题题库，建议背诵关键词。
+
+\subsection{计算机基础与算法}
+\begin{description}
+    \item[Q1: 简述冯·诺依曼体系结构的核心思想（“存储程序”原理）。] \hfill \\
+    \textbf{A:} 将程序（指令序列）和数据一起存储在计算机的存储器中，计算机在运行时自动地从存储器中取出指令并执行，而不需要人工干预。
+    
+    \item[Q2: 什么是算法？它有哪些基本特征？] \hfill \\
+    \textbf{A:} 算法是解决特定问题的一系列明确、有限的指令。
+    \textbf{五大特征}：
+    \begin{enumerate}
+        \item \textbf{有穷性}：步骤有限，在有限时间内完成。
+        \item \textbf{确定性}：每一步指令清晰无歧义。
+        \item \textbf{可行性}：每一步都能通过基本运算实现。
+        \item \textbf{输入}：0个或多个输入。
+        \item \textbf{输出}：1个或多个输出。
+    \end{enumerate}
+
+    \item[Q3: 结构化程序设计的三种基本控制结构是什么？] \hfill \\
+    \textbf{A:} 顺序结构、选择结构（分支结构）、循环结构。
+\end{description}
+
+\subsection{C语言核心概念}
+\begin{description}
+    \item[Q4: 什么是指针？为什么要使用指针？] \hfill \\
+    \textbf{A:} 指针是存储内存地址的变量。
+    \textbf{作用}：
+    \begin{enumerate}
+        \item 可以直接操作内存地址，提高程序效率。
+        \item 实现函数间的大数据传递（避免拷贝整个数组或结构体）。
+        \item 支持动态内存分配（malloc/free）。
+        \item 处理复杂的数据结构（如链表、树）。
+    \end{enumerate}
+
+    \item[Q5: 简述递归函数的优缺点。] \hfill \\
+    \textbf{A:} 
+    \textbf{优点}：代码简洁，逻辑清晰，适合解决具有重复子结构的问题（如汉诺塔、树的遍历）。
+    \textbf{缺点}：函数调用开销大，占用栈空间多，深度过深可能导致栈溢出，效率通常低于迭代。
+
+    \item[Q6: 结构体 (struct) 和共用体 (union) 的区别是什么？] \hfill \\
+    \textbf{A:} 
+    \textbf{结构体}：每个成员拥有独立的内存空间，总大小大于等于所有成员大小之和（受内存对齐影响）。所有成员可以同时存在。
+    \textbf{共用体}：所有成员共享同一块内存空间，总大小等于最大成员的大小。同一时刻只能存储其中一个成员的值。
+
+    \item[Q7: 局部变量和全局变量的区别？] \hfill \\
+    \textbf{A:} 
+    \textbf{作用域}：局部变量仅在定义它的函数或代码块内有效；全局变量在整个源程序文件中有效。
+    \textbf{生命周期}：局部变量随函数调用创建，函数结束销毁（static除外）；全局变量在程序运行期间一直存在。
+    \textbf{优先级}：同名时，局部变量屏蔽全局变量。
+
+    \item[Q8: 关键字 static 的作用有哪些？] \hfill \\
+    \textbf{A:} 
+    \begin{enumerate}
+        \item \textbf{修饰局部变量}：改变生命周期，使其在程序运行期间一直存在，但作用域不变（仍局限于函数内）。
+        \item \textbf{修饰全局变量/函数}：限制作用域，使其仅在当前源文件中可见，不能被其他文件引用（隐藏）。
+    \end{enumerate}
+\end{description}
+
+\subsection{常见算法特点与比较}
+\begin{description}
+    \item[Q9: 简述三种基本排序算法（冒泡、选择、插入）的区别与特点。] \hfill \\
+    \textbf{A:} 
+    \begin{itemize}
+        \item \textbf{冒泡排序}：两两比较相邻元素，大数下沉。
+        \begin{itemize}
+            \item 最好 $O(n)$（已有序），最坏 $O(n^2)$。
+            \item \textbf{稳定}。
+        \end{itemize}
+        \item \textbf{选择排序}：每次从未排序区选最小的放到已排序区末尾。
+        \begin{itemize}
+            \item 无论是否有序，复杂度恒为 $O(n^2)$。
+            \item \textbf{不稳定}（如序列 5, 8, 5, 2，第一趟交换第一个5和2，导致两个5相对位置改变）。
+        \end{itemize}
+        \item \textbf{插入排序}：将新元素插入到已排序序列的合适位置。
+        \begin{itemize}
+            \item 最好 $O(n)$，最坏 $O(n^2)$。对于\textbf{基本有序}的数据效率最高。
+            \item \textbf{稳定}。
+        \end{itemize}
+    \end{itemize}
+
+    \item[Q10: 顺序查找与二分查找的对比。] \hfill \\
+    \textbf{A:} 
+    \begin{itemize}
+        \item \textbf{顺序查找}：
+        \begin{itemize}
+            \item 适用性：无序或有序数组均可，链表也可。
+            \item 复杂度：$O(n)$。
+        \end{itemize}
+        \item \textbf{二分查找}：
+        \begin{itemize}
+            \item 适用性：\textbf{必须是有序数组}（支持随机访问）。
+            \item 复杂度：$O(\log_2 n)$。效率远高于顺序查找。
+        \end{itemize}
+    \end{itemize}
+
+    \item[Q11: 什么是算法的时间复杂度和空间复杂度？] \hfill \\
+    \textbf{A:} 
+    \begin{itemize}
+        \item \textbf{时间复杂度}：算法执行所需时间与问题规模 $n$ 之间的增长关系（通常用大O表示法，如 $O(n), O(n^2)$）。衡量算法运行快慢。
+        \item \textbf{空间复杂度}：算法执行过程中所需的存储空间与问题规模 $n$ 之间的增长关系。衡量算法占用内存多少。
+    \end{itemize}
+\end{description}
+
+\subsection{实验课补充简答题}
+\begin{description}
+    \item[Q12: 有序数组与无序数组在操作效率上有何区别？] \hfill \\
+    \textbf{A:}
+    \begin{itemize}
+        \item \textbf{无序数组}：插入最快 $O(1)$（直接追加），查找和删除较慢 $O(n)$（线性查找）。
+        \item \textbf{有序数组}：查找最快 $O(\log n)$（二分查找），插入和删除较慢 $O(n)$（需要移动元素保持有序）。
+    \end{itemize}
+
+    \item[Q13: 栈 (Stack) 的主要特性和基本操作有哪些？] \hfill \\
+    \textbf{A:}
+    \begin{itemize}
+        \item \textbf{特性}：后进先出 (LIFO, Last In First Out)。
+        \item \textbf{基本操作}：
+        \begin{itemize}
+            \item \textbf{Push (入栈)}：将元素放入栈顶。
+            \item \textbf{Pop (出栈)}：移除并返回栈顶元素。
+            \item \textbf{Peek (查看栈顶)}：返回栈顶元素但不移除。
+            \item \textbf{IsEmpty (判空)}：检查栈是否为空。
+        \end{itemize}
+    \end{itemize}
+
+    \item[Q14: 如何利用栈实现括号匹配（如JSON字符串校验）？] \hfill \\
+    \textbf{A:} 遍历字符串，遇到左括号（如 \texttt{\{, [}）入栈；遇到右括号（如 \texttt{\}, ]}）时，检查栈顶元素是否为对应的左括号。若是，则弹出栈顶元素继续；若否或栈为空，则匹配失败。遍历结束后栈应为空。
+
+    \item[Q15: 在“找出兴趣值最大的k个客户”问题中，为什么不需要全排序？] \hfill \\
+    \textbf{A:} 全排序的时间复杂度通常为 $O(n \log n)$ 或 $O(n^2)$。如果只需前 $k$ 个最大值，可以使用\textbf{部分选择排序}（执行 $k$ 轮选择），时间复杂度为 $O(k \cdot n)$。当 $k \ll n$ 时，效率更高。
+
+    \item[Q16: 递归解决汉诺塔问题的核心逻辑是什么？] \hfill \\
+    \textbf{A:} 将 $n$ 个盘子从 A 移到 C 的过程分解为三步：
+    \begin{enumerate}
+        \item 将 $n-1$ 个盘子从 A 移到 B（借助 C）。
+        \item 将第 $n$ 个盘子（最大的）从 A 移到 C。
+        \item 将 $n-1$ 个盘子从 B 移到 C（借助 A）。
+    \end{enumerate}
+    这是一个典型的分治递归思想。
+\end{description}
+
+\end{document}
