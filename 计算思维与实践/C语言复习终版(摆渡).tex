@@ -605,6 +605,133 @@ void f(int a[]) {
     \item \textbf{重复释放}：对同一个指针 \texttt{free} 两次（会导致崩溃）。
 \end{itemize}
 
+\section{链表与队列 (Linked List \& Queue)}
+
+\subsection{单向链表 (Singly Linked List)}
+链表是一种物理存储单元上非连续、非顺序的存储结构，数据元素的逻辑顺序是通过链表中的指针链接次序实现的。
+
+\subsubsection{节点定义}
+\begin{lstlisting}[style=mystyle]
+typedef struct Node {
+    int data;               // 数据域
+    struct Node *next;      // 指针域，指向下一个节点
+} Node;
+\end{lstlisting}
+
+\subsubsection{链表的核心操作}
+\begin{enumerate}
+    \item \textbf{创建新节点}
+    \begin{lstlisting}[style=mystyle]
+Node* createNode(int value) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    if (newNode == NULL) {
+        printf("Memory allocation failed!\n");
+        exit(1);
+    }
+    newNode->data = value;
+    newNode->next = NULL;
+    return newNode;
+}
+    \end{lstlisting}
+
+    \item \textbf{头插法 (Insert at Head)}
+    \begin{lstlisting}[style=mystyle]
+void insertHead(Node** head, int value) {
+    Node* newNode = createNode(value);
+    newNode->next = *head; // 新节点的 next 指向当前头节点
+    *head = newNode;       // 更新头指针指向新节点
+}
+    \end{lstlisting}
+
+    \item \textbf{尾插法 (Insert at Tail)}
+    \begin{lstlisting}[style=mystyle]
+void insertTail(Node** head, int value) {
+    Node* newNode = createNode(value);
+    if (*head == NULL) {
+        *head = newNode;
+        return;
+    }
+    Node* temp = *head;
+    while (temp->next != NULL) { // 遍历到最后一个节点
+        temp = temp->next;
+    }
+    temp->next = newNode;
+}
+    \end{lstlisting}
+
+    \item \textbf{链表遍历}
+    \begin{lstlisting}[style=mystyle]
+void printList(Node* head) {
+    Node* current = head;
+    while (current != NULL) {
+        printf("%d -> ", current->data);
+        current = current->next;
+    }
+    printf("NULL\n");
+}
+    \end{lstlisting}
+\end{enumerate}
+
+\subsection{队列 (Queue)}
+队列是一种特殊的线性表，只允许在表的前端（front）进行删除操作，在表的后端（rear）进行插入操作。遵循 \textbf{FIFO (First In First Out, 先进先出)} 原则。
+
+\subsubsection{队列的结构体定义 (链式队列)}
+使用链表实现队列可以避免数组大小固定的限制。
+
+\begin{lstlisting}[style=mystyle]
+typedef struct {
+    Node *front; // 队头指针，用于出队
+    Node *rear;  // 队尾指针，用于入队
+} Queue;
+
+// 初始化队列
+void initQueue(Queue *q) {
+    q->front = q->rear = NULL;
+}
+\end{lstlisting}
+
+\subsubsection{入队与出队}
+\begin{itemize}
+    \item \textbf{入队 (Enqueue)}：在 \texttt{rear} 后添加新节点。
+    \begin{lstlisting}[style=mystyle]
+void enqueue(Queue *q, int value) {
+    Node* newNode = createNode(value);
+    if (q->rear == NULL) { // 队列为空
+        q->front = q->rear = newNode;
+        return;
+    }
+    q->rear->next = newNode; // 旧队尾指向新节点
+    q->rear = newNode;       // 更新队尾指针
+}
+    \end{lstlisting}
+
+    \item \textbf{出队 (Dequeue)}：移除 \texttt{front} 指向的节点。
+    \begin{lstlisting}[style=mystyle]
+int dequeue(Queue *q) {
+    if (q->front == NULL) return -1; // 队列为空
+
+    Node *temp = q->front;
+    int data = temp->data;
+    
+    q->front = q->front->next; // 队头指针后移
+    
+    if (q->front == NULL) { // 如果出队后队列变空，rear也要置空
+        q->rear = NULL;
+    }
+    
+    free(temp); // 释放节点内存
+    return data;
+}
+    \end{lstlisting}
+\end{itemize}
+
+\subsection{易错点}
+\begin{itemize}
+    \item \textbf{内存泄漏}：删除节点或销毁链表时，记得 \texttt{free} 内存。
+    \item \textbf{空链表处理}：在插入、删除操作时，要考虑头指针为 \texttt{NULL} 的情况。
+    \item \textbf{断链}：插入节点时，先连后断。
+\end{itemize}
+
 \section{文件操作详解 (File I/O)}
 
 \subsection{文件打开与关闭}
